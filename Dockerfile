@@ -15,8 +15,8 @@ WORKDIR /usr/local/src
 RUN tar -xzf udunits-2.2.26.tar.gz \
     && cd ./udunits-2.2.26/ \
     #&& autoconf \
-    # Fix gmp, check version: ls | grep gmp
-    && ln -s /usr/lib/libgmp.so.10.4.0 /usr/lib/libgmp.so.4 \
+    # Fix gmp, check and adjust version: ls /usr/lib | grep gmp
+    && ln -s /usr/lib/libgmp.so.10.4.0 /usr/lib/libgmp.so.3 \
     && ./configure --prefix=/opt \
     && make \
     && make install \
