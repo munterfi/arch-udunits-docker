@@ -8,7 +8,7 @@ ADD https://www.unidata.ucar.edu/downloads/udunits/udunits-2.2.26.tar.gz /usr/lo
 
 # pacman: Update and add libs
 RUN pacman -Syu --noprogressbar --noconfirm \
-    && pacman -S --needed --noprogressbar --noconfirm base-devel gmp
+    && pacman -S --noprogressbar --noconfirm base-devel gmp
 
 # UDUNITS 2: Install from source and link to /lib
 WORKDIR /usr/local/src
@@ -16,7 +16,7 @@ RUN tar -xzf udunits-2.2.26.tar.gz \
     && cd ./udunits-2.2.26/ \
     #&& autoconf \
     # Fix gmp, check and adjust version: ls /usr/lib | grep gmp
-    && ln -s /usr/lib/libgmp.so.10.4.0 /usr/lib/libgmp.so.3 \
+    #&& ln -s /usr/lib/libgmp.so.10.4.0 /usr/lib/libgmp.so.3 \
     && ./configure --prefix=/opt \
     && make \
     && make install \
