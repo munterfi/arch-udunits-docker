@@ -1,14 +1,14 @@
 ARG VERSION=latest
 FROM archlinux:$VERSION
 LABEL maintainer="info@munterfinger.ch"
+USER root
 
 # Files: Copy and pull
 ADD https://www.unidata.ucar.edu/downloads/udunits/udunits-2.2.26.tar.gz /usr/local/src
 
 # pacman: Update and add libs
-RUN \
-  pacman -Syu --noprogressbar --noconfirm \
-  && pacman -S --needed --noprogressbar --noconfirm base-devel
+RUN pacman -Syu --noprogressbar --noconfirm \
+    && pacman -S --needed --noprogressbar --noconfirm base-devel
 
 # UDUNITS 2: Install from source and link to /lib
 WORKDIR /usr/local/src
@@ -24,4 +24,5 @@ RUN tar -xzf udunits-2.2.26.tar.gz \
     && ldconfig -v \
     && rm -rf udunits*
 
+WORKDIR /
 CMD ["/usr/bin/bash"]

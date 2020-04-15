@@ -1,2 +1,2 @@
-docker rm archgis
-docker run -it --name archgis archgis
+docker rm udunits
+docker run -it --name udunits udunits
