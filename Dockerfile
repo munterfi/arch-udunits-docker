@@ -14,15 +14,16 @@ RUN pacman -Syu --noprogressbar --noconfirm \
 WORKDIR /usr/local/src
 RUN tar -xzf udunits-2.2.26.tar.gz \
     && cd ./udunits-2.2.26/ \
+    && autoconf \
     && ./configure \
     && make \
     && make install \
     # Symlink
     && ln -s /usr/local/lib/libudunits2.so "/lib/libudunits2.so" \
     && ln -s /usr/local/lib/libudunits2.so.0 "/lib/libudunits2.so.0" \
-    && ln -s /usr/local/lib/libudunits2.so.0.1.0 "/lib/libudunits2.so.0.1.0" \
-    && ldconfig -v \
-    && rm -rf udunits*
+    && ln -s /usr/local/lib/libudunits2.so.0.1.0 "/lib/libudunits2.so.0.1.0"
+    #&& ldconfig -v
+    #&& rm -rf udunits*
 
 WORKDIR /
 CMD ["/usr/bin/bash"]
