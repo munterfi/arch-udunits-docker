@@ -1,1 +1,2 @@
-docker build -t udunits .
+#!/usr/bin/env bash
+docker build -t udunits-configure .

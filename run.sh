@@ -1,2 +1,2 @@
-docker rm udunits
-docker run -it --name udunits udunits
+#!/usr/bin/env bash
+docker run -it --name udunits-configure udunits-configure

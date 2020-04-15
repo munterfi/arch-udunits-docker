@@ -10,22 +10,17 @@ ADD https://www.unidata.ucar.edu/downloads/udunits/udunits-2.2.26.tar.gz /usr/lo
 RUN pacman -Syu --noprogressbar --noconfirm \
     && pacman -S --noprogressbar --noconfirm base-devel gmp
 
-# UDUNITS 2: Install from source and link to /lib
+# UDUNITS 2: ./configure and copy for archgis docker
 WORKDIR /usr/local/src
 RUN tar -xzf udunits-2.2.26.tar.gz \
+    && cp -r udunits-2.2.26 orig \
+    && mkdir diff \
     && cd ./udunits-2.2.26/ \
-    #&& autoconf \
-    # Fix gmp, check and adjust version: ls /usr/lib | grep gmp
-    #&& ln -s /usr/lib/libgmp.so.10.4.0 /usr/lib/libgmp.so.3 \
     && ./configure --prefix=/opt \
-    && make \
-    && make install \
-    # Symlink
-    && ln -s /opt/lib/libudunits2.so "/lib/libudunits2.so" \
-    && ln -s /opt/lib/libudunits2.so.0 "/lib/libudunits2.so.0" \
-    && ln -s /opt/lib/libudunits2.so.0.1.0 "/lib/libudunits2.so.0.1.0"
-    #&& ldconfig -v
-    #&& rm -rf udunits*
+    && cd - \
+    && LANG=C diff -aqr orig udunits-2.2.26 | \
+      awk -F'[ :]' '/^Only in/{system("cp -a "$3"/"$NF " diff")}' \
+    && tar -czvf udunits-configure.tar.gz diff
 
 WORKDIR /
 CMD ["/usr/bin/bash"]
